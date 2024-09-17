@@ -9,11 +9,12 @@ import { SWContext } from './utils/context'
 
 function App() {
   const [hero, setHero] = useState(defaultHero)
+  const [hasError, setHasError] = useState(false);
 
   return (
     <div>
       <SWContext.Provider value={{
-        hero, changeHero: setHero
+        hero, changeHero: setHero, hasError, setHasError
       }}>
         <Header />
         <Main />

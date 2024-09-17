@@ -1,23 +1,15 @@
-import { useContext, useEffect, useState } from 'react';
-import { base_url, characters, defaultHero, period_month } from '../utils/constants';
-import { useParams } from 'react-router-dom';
-import { SWContext } from '../utils/context';
-import ErrorPage from './ErrorPage';
+import { useEffect, useState } from 'react';
+import { base_url, period_month } from '../utils/constants';
+
+import { withErrorPage } from '../hoc/withErrorPage';
 
 const Contact = () => {
   const [planets, setPlanets] = useState(['wait...']);
-  const { heroId = defaultHero } = useParams();
-  const {changeHero} = useContext(SWContext);
-  useEffect(() => {
-      if (!characters[heroId]) {
-          return;
-        }
-        changeHero(heroId);
-      }, [heroId])
+
 
   async function fillPlanets() {
     const response = await fetch(`${base_url}/v1/planets`);
-    const data: ({name: string})[] = await response.json();
+    const data: ({ name: string })[] = await response.json();
     const planets = data.map(item => item.name);
     setPlanets(planets);
     localStorage.setItem('planets', JSON.stringify({
@@ -35,7 +27,7 @@ const Contact = () => {
     }
   }, [])
 
-  return characters[heroId]?(
+  return (
     <form className='rounded-[5px] bg-[#f2f2f2] p-5'>
       <label className='w-full text-red-color'>First Name
         <input className='w-full p-3 border-[#ccc] border border-solid rounded-[4px] mt-1.5 mb-4 resize-y' type="text" name="firstname" placeholder="Your name.." />
@@ -55,7 +47,7 @@ const Contact = () => {
       </label>
       <button className='bg-[#04AA6D] text-white px-3 py-5 border-none rounded-[4px] cursor-pointer hover:bg-[#45a049]'>Submit</button>
     </form>
-  ):<ErrorPage/>
+  )
 }
 
-export default Contact
+export default withErrorPage(Contact)

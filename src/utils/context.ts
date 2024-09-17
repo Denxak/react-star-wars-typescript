@@ -4,5 +4,7 @@ import { defaultHero } from "./constants";
 
 export const SWContext = createContext<SWContextValue>({
     changeHero: (hero: string) => {console.log(hero)},
-    hero: defaultHero
+    hero: defaultHero,
+    hasError: false,
+    setHasError: () => {console.log(false)}
 });
